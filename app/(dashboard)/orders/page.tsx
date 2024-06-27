@@ -30,7 +30,11 @@ const OrdersPage = () => {
       <p className="text-heading2-bold">Orders</p>
       <Separator className="my-5 bg-grey-1" />
 
-      <DataTable data={orders} columns={OrderColumns} keyField="_id" />
+      <DataTable<OrderColumnType, any>
+        data={orders}
+        columns={OrderColumns}
+        searchKey="_id"
+      />
     </div>
   );
 };
