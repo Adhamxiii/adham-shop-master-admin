@@ -39,7 +39,11 @@ const OrderDetailsPage = async ({
         <span className="text-base-medium">{orderDetails.shippingRate}</span>
       </p>
 
-      <DataTable data={orderDetails} columns={OrderItemsColumns} keyField="product" />
+      <DataTable<OrderItemType, any>
+        data={orderDetails}
+        columns={OrderItemsColumns}
+        searchKey="product"
+      />
     </div>
   );
 };
