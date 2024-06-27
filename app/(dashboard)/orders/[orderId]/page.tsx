@@ -8,7 +8,7 @@ const OrderDetailsPage = async ({
   params: { orderId: string };
 }) => {
   const res = await axios.get(
-    `http://localhost:3001/api/orders/${params.orderId}`,
+    `${process.env.ADMIN_DASHBOARD_URL}/api/orders/${params.orderId}`,
   );
 
   const { orderDetails, customer } = await res.data;
