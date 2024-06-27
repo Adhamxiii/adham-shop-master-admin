@@ -25,7 +25,9 @@ export async function POST(req: NextRequest) {
       shipping_address_collection: {
         allowed_countries: ["US", "EG"],
       },
-      shipping_options: [{ shipping_rate: "shr_1PVLZyEHqoI5YNrUlaGcjuIo" }],
+      shipping_options: [
+        { shipping_rate: "shr_1PVLZyEHqoI5YNrUlaGcjuIo" },
+      ],
       line_items: cartItems.map((cartItem: any) => ({
         price_data: {
           currency: "usd",
@@ -37,11 +39,11 @@ export async function POST(req: NextRequest) {
               ...(cartItem.color && { color: cartItem.color }),
             },
           },
-          unit_amount: Math.round(cartItem.item.price * 100),
+          unit_amount: cartItem.item.price * 100,
         },
         quantity: cartItem.quantity,
       })),
-      client_reference_id: customer.id,
+      client_reference_id: customer.clerkId,
       success_url: `${process.env.ECOMMERCE_STORE_URL}/payment_success`,
       cancel_url: `${process.env.ECOMMERCE_STORE_URL}/cart`,
     });
@@ -52,6 +54,6 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
-export const dynamic = "force-dynamic";
+
 
 // shr_1PVLZyEHqoI5YNrUlaGcjuIo;
