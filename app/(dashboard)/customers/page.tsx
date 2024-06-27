@@ -14,7 +14,11 @@ const CustomersPage = async () => {
     <div className="px-10 py-5">
       <p className="text-heading2-bold">Customers</p>
       <Separator className="my-5 bg-grey-1" />
-      <DataTable data={customers} columns={CustomerColumns} keyField="name" />
+      <DataTable<CustomerType, any>
+        data={customers}
+        columns={CustomerColumns}
+        searchKey="name"
+      />
     </div>
   );
 };

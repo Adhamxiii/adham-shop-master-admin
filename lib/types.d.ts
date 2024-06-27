@@ -38,7 +38,7 @@ type OrderItemType = {
 };
 
 type CustomerType = {
-  clerkId: string;
+  id: string;
   name: string;
   email: string;
 };
