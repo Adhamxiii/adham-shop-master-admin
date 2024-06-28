@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 
 export default withAuth(
   async function middleware(request: NextRequestWithAuth) {
-    const pathname = request.nextUrl.pathname;
+    const { pathname } = request.nextUrl;
     const isAuth = await getToken({ req: request });
-    const protectedPages = ["/profile"];
+    const protectedPages = ["/"];
     const isAuthPage = pathname.startsWith("/auth");
     const isProtectedPage = protectedPages.some((page) =>
       pathname.startsWith(page),
@@ -40,8 +40,6 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    // Apply middleware to all routes except /auth/login
-    // "/((?!auth/login|api).*)",
-    '/profile'
+    "/((?!auth/login|api).*)",
   ],
 };

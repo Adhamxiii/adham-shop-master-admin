@@ -7,7 +7,7 @@ import { stripe } from "@/lib/stripe";
 export const POST = async (req: NextRequest) => {
   try {
     const rawBody = await req.text()
-    const signature = req.headers.get("Stripe-Signature") as string
+    const signature = req.headers.get("Stripe-Signature")!
 
     const event = stripe.webhooks.constructEvent(
       rawBody,
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
       const session = event.data.object
 
       const customerInfo = {
-        clerkId: session?.client_reference_id,
+        id: session?.client_reference_id,
         name: session?.customer_details?.name,
         email: session?.customer_details?.email,
       }
@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
 
       const retrieveSession = await stripe.checkout.sessions.retrieve(
         session.id,
-        { expand: ["line_items.data.price.product"]}
+        { expand: ["line_items.data.price.product"] }
       )
 
       const lineItems = await retrieveSession?.line_items?.data
@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
       await connectToDB()
 
       const newOrder = new Order({
-        customerClerkId: customerInfo.clerkId,
+        customerId: customerInfo.id,
         products: orderItems,
         shippingAddress,
         shippingRate: session?.shipping_cost?.shipping_rate,
@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
 
       await newOrder.save()
 
-      let customer = await Customer.findOne({ clerkId: customerInfo.clerkId })
+      let customer = await Customer.findOne({ id: customerInfo.id })
 
       if (customer) {
         customer.orders.push(newOrder._id)
@@ -72,6 +72,9 @@ export const POST = async (req: NextRequest) => {
       }
 
       await customer.save()
+
+      const order = await Order.create(newOrder)
+      return NextResponse.json(order, { status: 200 })
     }
 
     return new NextResponse("Order created", { status: 200 })
