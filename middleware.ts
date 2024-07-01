@@ -13,9 +13,7 @@ export default withAuth(
     );
 
     if (!isAuth && isProtectedPage) {
-      const redirectTo = new URL("/auth/login", request.url);
-      redirectTo.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(redirectTo);
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
 
     if (isAuth && isAuthPage) {

@@ -53,9 +53,10 @@ const LoginPage = () => {
     if (res?.error) {
       setError('Invalid email of password')
       toast.error('Invalid email of password')
-      if (res?.url) { router.replace('/') }
     } else {
       setError('')
+      router.push('/')
+      window.location.href = '/'
     }
 
   };
