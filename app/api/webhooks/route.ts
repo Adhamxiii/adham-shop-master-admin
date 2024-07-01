@@ -3,11 +3,18 @@ import Order from "@/lib/models/Order";
 import { connectToDB } from "@/lib/mongoDB";
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import getRawBody from 'raw-body';
 
-export const POST = async (req: NextRequest) => {
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export const POST = async (req: any) => {
   try {
-    const rawBody = await req.text()
-    const signature = req.headers.get("Stripe-Signature")!
+    const rawBody = await getRawBody(req);
+    const signature = req.headers["Stripe-Signature"]
 
     const event = stripe.webhooks.constructEvent(
       rawBody,
@@ -37,7 +44,7 @@ export const POST = async (req: NextRequest) => {
         { expand: ["line_items.data.price.product"] }
       )
 
-      const lineItems = await retrieveSession?.line_items?.data
+      const lineItems = retrieveSession?.line_items?.data
 
       const orderItems = lineItems?.map((item: any) => {
         return {
@@ -72,9 +79,6 @@ export const POST = async (req: NextRequest) => {
       }
 
       await customer.save()
-
-      const order = await Order.create(newOrder)
-      return NextResponse.json(order, { status: 200 })
     }
 
     return new NextResponse("Order created", { status: 200 })

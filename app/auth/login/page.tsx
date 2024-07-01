@@ -71,7 +71,7 @@ const LoginPage = () => {
         />
       </div>
       <div className="relative flex flex-1 flex-col items-center justify-between py-16">
-        <div className="flex w-full flex-col justify-center gap-12 px-20">
+        <div className="flex min-w-full flex-col justify-center gap-8 px-20">
           <div className="flex flex-col gap-2">
             <h1 className="text-heading1-bold font-bold">Login</h1>
             <p className="text-base-medium">
@@ -129,7 +129,7 @@ const LoginPage = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col absolute bottom-2">
+        <div className="absolute bottom-2">
           <Image
             src="/logo.png"
             alt=""
