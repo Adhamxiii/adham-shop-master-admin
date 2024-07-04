@@ -13,7 +13,21 @@ export default async function Home() {
   const totalOrders = await getTotalSales().then((data) => data.totalOrders);
   const totalCustomers = await getTotalCustomers();
 
-  const graphData = await getSalesPerMonth();
+  // const graphData = await getSalesPerMonth();
+  const graphData = [
+    { name: "Jun", sales: 400 },
+    { name: "Feb", sales: 200 },
+    { name: "Mar", sales: 300 },
+    { name: "Apr", sales: 250 },
+    { name: "May", sales: 150 },
+    { name: "Jun", sales: 400 },
+    { name: "Jul", sales: 200 },
+    { name: "Aug", sales: 300 },
+    { name: "Sep", sales: 250 },
+    { name: "Oct", sales: 150 },
+    { name: "Nov", sales: 400 },
+    { name: "Dec", sales: 400 },
+  ];
 
   return (
     <div className="px-8 py-10">
@@ -27,7 +41,7 @@ export default async function Home() {
             <CircleDollarSign className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
-            <p className="text-body-bold">$ {totalRevenue}</p>
+            <p className="text-body-bold">$ 400</p>
           </CardContent>
         </Card>
 
@@ -37,7 +51,7 @@ export default async function Home() {
             <ShoppingBag className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
-            <p className="text-body-bold">$ {totalOrders}</p>
+            <p className="text-body-bold">4</p>
           </CardContent>
         </Card>
 
@@ -47,19 +61,18 @@ export default async function Home() {
             <UserRound className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
-            <p className="text-body-bold">$ {totalCustomers}</p>
+            <p className="text-body-bold">2</p>
           </CardContent>
         </Card>
-
       </div>
-        <Card className="mt-10">
-          <CardHeader>
-            <CardTitle>Sales Chart ($)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <SalesChart data={graphData} />
-          </CardContent>
-        </Card>
+      <Card className="mt-10">
+        <CardHeader>
+          <CardTitle>Sales Chart ($)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SalesChart data={graphData} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
